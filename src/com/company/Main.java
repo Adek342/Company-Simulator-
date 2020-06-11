@@ -4,12 +4,12 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) { // MENU GLOWNE GRY
+    public static void main(String[] args) {
 
         int choice = -1;
         Main_Interface mainInterface = new Main_Interface();
 
-        while (choice < 0 || choice > 1){
+        while (choice < 0 || choice > 1){       // MENU GLOWNE GRY
         System.out.println("");
         System.out.println("");
         System.out.println("                                                                                        COMPANY SIMULATOR");

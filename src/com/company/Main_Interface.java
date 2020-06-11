@@ -7,19 +7,21 @@ public class Main_Interface {
     Actions Actions = new Actions();
     Scanner scan = new Scanner(System.in);
 
-    public void Prolog(){   //METODA WSTEPNA
+    public Main_Interface(){ }
+
+    public void Prolog(){       //METODA WSTEPNA
         System.out.println("");
-        System.out.println("                                                 WPROWADZENIE"); //DATA DO ZMODYFIKOWANIA
+        System.out.println("                                                 WPROWADZENIE");
         System.out.println("                                          Rozpoczynasz pracę 1 stycznia 2020, każdy dzień to jedna tura. \n" +
                 "                                          Jeżeli jest to dzień wolny od pracy, możesz pracować samodzielnie, jeżeli jest \n" +
                 "                                          to dzień roboczy, pracują twoi podwykonawcy oraz pracownicy.\n");
         System.out.println("                               Wprowadź dowolny klawicz aby kontynuować: \n");
-        var Continue = scan.next(); //PRZEJSCIE DO GRY
+        var Continue = scan.next();     //PRZEJSCIE DO GRY
         Time();
         includeAction();
     }
 
-    public void Time() // METODA AKTUALIZACJI CZASU
+    public void Time()      //METODA AKTUALIZACJI CZASU
     {
         int Day = 1;
         String Month = "styczeń";
@@ -27,7 +29,7 @@ public class Main_Interface {
         System.out.println("                              " + Day + " " + Month + " " + Year + "\n");
     }
 
-    public void includeAction(){ // METODA WYWOLUJACA CODZIENNE CZYNNOSCI
+    public void includeAction(){    // METODA WYWOLUJACA CODZIENNE CZYNNOSCI
         Actions.showActions();
     }
 }
