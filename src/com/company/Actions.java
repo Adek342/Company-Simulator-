@@ -4,10 +4,11 @@ import java.util.Scanner;
 
 public class Actions {
     Company company = new Company();
-
+    Time myTime = new Time();
     public Actions(){}
 
     public void showActions() {     // METODA WYSWIETLAJACA DOSTEPNE CZYNNOSCI
+        System.out.println(myTime);
         System.out.println("                                          1. Podpisz umowę na realizację projektu");
         System.out.println("                                          2. Przeznacz dzień na szukanie klientów (każde 5 dni to jeden nowy dostępny projekt)");
         System.out.println("                                          3. Przeznacz dzień na programowanie");
@@ -26,13 +27,14 @@ public class Actions {
     public void choiceAction(){     //WYBÓR AKCJI
         int choice = -1;
 
-        while (choice < 1 || choice > 11){
+        while (choice >= 1 || choice <= 11){
             Scanner scan = new Scanner(System.in);
             choice = scan.nextInt();
-        }
-        switch(choice){
+
+        switch(choice) {
             case 1:
                 company.getProjectContractsAvailable();
+                company.choiceAction();
                 break;
             case 2:
                 // code block
@@ -64,6 +66,8 @@ public class Actions {
             case 11:
                 // code block
                 break;
+        }
+        showActions();
         }
     }
 }

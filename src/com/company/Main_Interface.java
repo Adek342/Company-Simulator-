@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 public class Main_Interface {
 
-    Actions Actions = new Actions();
+    Actions actions = new Actions();
     Scanner scan = new Scanner(System.in);
+    Time myTime = new Time();
 
     public Main_Interface(){ }
 
@@ -17,19 +18,10 @@ public class Main_Interface {
                 "                                          to dzień roboczy, pracują twoi podwykonawcy oraz pracownicy.\n");
         System.out.println("                               Wprowadź dowolny klawicz aby kontynuować: \n");
         var Continue = scan.next();     //PRZEJSCIE DO GRY
-        Time();
         includeAction();
     }
 
-    public void Time()      //METODA AKTUALIZACJI CZASU
-    {
-        int Day = 1;
-        String Month = "styczeń";
-        int Year = 2020;
-        System.out.println("                              " + Day + " " + Month + " " + Year + "\n");
-    }
-
     public void includeAction(){    // METODA WYWOLUJACA CODZIENNE CZYNNOSCI
-        Actions.showActions();
+        actions.showActions();
     }
 }

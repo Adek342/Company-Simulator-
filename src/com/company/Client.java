@@ -20,7 +20,7 @@ public class Client {
             customerType = "skrwl";
     }
 
-    public int randomBetween(int start, int end)
+    public int randomBetween(int start, int end)        //METODA LOSUJĄCA RANDOMOWE LICZBY Z PRZEDZIALU
     {
         Random random = new Random();
         int a1 = random.nextInt(end - start + 1);

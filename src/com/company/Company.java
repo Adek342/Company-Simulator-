@@ -3,6 +3,7 @@ package com.company;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 
 public class Company {
@@ -10,6 +11,7 @@ public class Company {
     List<Project> toDoList = new ArrayList<>();                         //LISTA PROJEKTÓW DO ZROBIENIA
     List<Project> projectContractsAvailable = new ArrayList<>();        //DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
     List<Project> projectList = new ArrayList<>();                      //LISTA WSZYSTKICH PROJEKTÓW
+    Time myTime = new Time();
 
     public Company()
     {
@@ -18,14 +20,16 @@ public class Company {
         generateThreeProjects();
     }
 
-    public void generateProject(){                                      //METODA GENERUJĄCA PROJEKTY DO ROZGRYWKI
+    public void generateProject(){                                      //METODA GENERUJĄCA NOWE PROJEKTY DO ROZGRYWKI
 
     }
 
     public void generateThreeProjects(){                                //GENERUJE PIERWSZE TRZY PROJEKTY DOSTĘPNE DO REALIZACJI PO URUCHOMIENIU GRY
-        for (int i = 0; i < 3; i++)
+        while (projectContractsAvailable.size() != 3)
         {
-            projectContractsAvailable.add(projectList.get(randomBetween(0, 14)));
+            int Number = randomBetween(0,14);   //NUMER NA LISCIE
+            if (projectContractsAvailable.isEmpty() == true || projectContractsAvailable.contains(projectList.get(Number)) == false)
+                projectContractsAvailable.add(projectList.get(Number));
         }
     }
 
@@ -47,13 +51,46 @@ public class Company {
         projectList.add(new Project("Project15", new Client("Kajetan", "Szaranowicz"), 6, 1500.0, 3000.0, 2, "Łatwy"));
     }
 
-    public List<Project> getProjectContractsAvailable() {
+    public List<Project> getProjectContractsAvailable() {       //METODA SPRAWDZAJĄCA DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
         for (int i = 0; i < projectContractsAvailable.size(); i++)
-            System.out.println(projectContractsAvailable.get(i));
+            System.out.println("                                                     "+ "ID: " + i + " " + projectContractsAvailable.get(i) + " - " + projectContractsAvailable.get(i).levelOfComplexity + " Poziom zaawansowania");
         return projectContractsAvailable;
     }
 
-    public int randomBetween(int start, int end)
+    public void choiceAction(){     //METODA DOKONANIA WYBORU
+        System.out.println("1. Spawdź wymagania technologiczne lub podpisz umowę: ");
+        System.out.println("0. Wyjdź");
+        int choice;
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if(choice == 1)
+            checkTechnologies();
+    }
+
+    public void checkTechnologies(){        //METODA SPRAWDZAJĄCA POTRZEBY TECHNOLOGICZNE PROJEKTU
+        System.out.println("Wpisz ID Projektu: ");
+        int ID;
+        Scanner scan = new Scanner(System.in);
+        ID = scan.nextInt();
+        System.out.println(projectContractsAvailable.get(ID).getProjectContent());
+        sighTheContract(projectContractsAvailable.get(ID));
+    }
+
+
+    public void sighTheContract(Project project){      //METODA PODPISUJĄCA KONTRAKT NA REALIZACJE PROJEKTU
+        System.out.println("1. Podpisz kontrakt");
+        System.out.println("0. Wyjdź");
+        int choice;
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if(choice == 1) {
+            toDoList.add(project);
+            projectContractsAvailable.remove(project);
+            myTime.endOfTurn();
+        }
+    }
+
+    public int randomBetween(int start, int end)        //METODA LOSUJĄCA RANDOMOWE LICZBY Z PRZEDZIALU
     {
         Random random = new Random();
         int a1 = random.nextInt(end - start + 1);

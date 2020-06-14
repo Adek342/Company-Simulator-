@@ -43,11 +43,16 @@ public class Project {
         if(levelOfComplexity == "Średni") numberOfProperties = 2;
         if(levelOfComplexity == "Trudny") numberOfProperties = randomBetween(3,6);
 
-        for(int i = 0; i < numberOfProperties; i++){
+        while(projectContent.size() != numberOfProperties){
             typeOfDeignProperty = randomBetween(0,5);
-            projectContent.add(typesOfDesignProperties.get(typeOfDeignProperty));
+            if (projectContent.isEmpty() == true || projectContent.contains(typesOfDesignProperties.get(typeOfDeignProperty)) == false)  //WARUNEK CHRONI PRZED POWTARZALNOSCIA TECHNOLOGII W PROJEKCIE
+                projectContent.add(typesOfDesignProperties.get(typeOfDeignProperty));
         }
         countTheLeadTime();
+    }
+
+    public List<String> getProjectContent() {
+        return projectContent;
     }
 
     public void countTheLeadTime()      //LICZY ILOSC DNI POTRZEBNYCH NA REALIZACJE PROJEKTU
@@ -68,7 +73,7 @@ public class Project {
         }
     }
 
-    public int randomBetween(int start, int end)
+    public int randomBetween(int start, int end)        //METODA LOSUJĄCA RANDOMOWE LICZBY Z PRZEDZIALU
     {
         Random random = new Random();
         int a1 = random.nextInt(end - start + 1);
