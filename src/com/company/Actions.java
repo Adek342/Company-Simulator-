@@ -8,18 +8,16 @@ public class Actions {
     public Actions(){}
 
     public void showActions() {     // METODA WYSWIETLAJACA DOSTEPNE CZYNNOSCI
-        System.out.println(myTime);
+        System.out.print(myTime);
+        System.out.println(company.getAccountBalance() + "\n");
         System.out.println("                                          1. Podpisz umowę na realizację projektu");
         System.out.println("                                          2. Przeznacz dzień na szukanie klientów (każde 5 dni to jeden nowy dostępny projekt)");
-        System.out.println("                                          3. Przeznacz dzień na programowanie");
-        System.out.println("                                          4. Przeznacz dzień na testowanie (możesz testować własny kod, kod podwykonawców i kod pracowników)");
-        System.out.println("                                          5. Oddaj gotowy projekt klientowi");
-        System.out.println("                                          6. Zatrudnij nowego pracownika");
-        System.out.println("                                          7. Zwolnij pracownika");
-        System.out.println("                                          8. Przeznacz dzień na rozliczenia z urzędami (Wymagane 2 dni w miesiącu, w przeciwnym wypadku zamykasz firmę z długami)");
-        System.out.println("                                          9. Sprawdź stan realizacji projektu)");
-        System.out.println("                                          10. Sprawdź swój zespół");
-        System.out.println("                                          11. Sprawdź stan konta \n");
+        System.out.println("                                          3. Lista projektów do zrealizowania");
+        System.out.println("                                          4. Oddaj gotowy projekt klientowi");
+        System.out.println("                                          5. Zatrudnij nowego pracownika");
+        System.out.println("                                          6. Zwolnij pracownika");
+        System.out.println("                                          7. Przeznacz dzień na rozliczenia z urzędami (Wymagane 2 dni w miesiącu, w przeciwnym wypadku zamykasz firmę z długami)");
+        System.out.println("                                          8. Sprawdź swój zespół \n");
         System.out.println("                                       Twój wybór: ");
         choiceAction();
     }
@@ -34,16 +32,17 @@ public class Actions {
         switch(choice) {
             case 1:
                 company.getProjectContractsAvailable();
-                company.choiceAction();
+                company.choiceActionOnContractsAvailable();
                 break;
             case 2:
-                // code block
+                company.generateProject();
                 break;
             case 3:
-                // code block
+                company.getToDoList();
+                company.choiceActionOnToDoList();
                 break;
             case 4:
-                // code block
+                company.returnFinishedProject();
                 break;
             case 5:
                 // code block
@@ -55,15 +54,6 @@ public class Actions {
                 // code block
                 break;
             case 8:
-                // code block
-                break;
-            case 9:
-                // code block
-                break;
-            case 10:
-                // code block
-                break;
-            case 11:
                 // code block
                 break;
         }

@@ -1,10 +1,11 @@
 package com.company;
 
 public class Time {
-    public static String[] Months = new String[12];     //TABLICA MIESIĘCY
-    public static int Day = 1;                          //DZIEN
-    public static String Month = Months[0];             //MIESIĄC
-    public static int Year = 2020;                      //ROK
+    public static String[] Months = new String[12];            //TABLICA MIESIĘCY
+    public static int Day;                                     //AKTUALNY DZIEN
+    public static String Month;                                //AKTUALNY MIESIĄC
+    public static String dayOfTheWeek;                         //AKTUALNY DZIEN TYGODNIA
+    public static int Year;                                    //ROK
 
     public Time(){
         Months[0] = "styczeń";
@@ -19,12 +20,50 @@ public class Time {
         Months[9] = "październik";
         Months[10] = "listopad";
         Months[11] = "grudzień";
+
+        dayOfTheWeek = "środa";
+        Month = Months[0];
+        Year = 2020;
+        Day = 1;
     }
-    public static void endOfTurn(){
-        Day++;
+    public static void endOfTurn(){     //METODA WYWOLYWANA PO WYKONANIU CZYNNOSCI DZIENNEJ
+        Day++;      // PRZECHODZI DO NASTEPNEGO DNIA MIESIACA ( TURY ) PO WYKONANIU CZYNNOSCI
         nextMonth();
+        nextDayOfTheWeek();
     }
-    public static void nextMonth(){
+
+    public static void nextDayOfTheWeek(){      //METODA MODYFIKUJĄCA DNI TYGODNIA
+        switch(dayOfTheWeek) {
+            case "poniedziałek":
+                dayOfTheWeek = "wtorek";
+                break;
+            case "wtorek":
+                dayOfTheWeek = "środa";
+                break;
+            case "środa":
+                dayOfTheWeek = "czwartek";
+                // code block
+                break;
+            case "czwartek":
+                dayOfTheWeek = "piątek";
+                // code block
+                break;
+            case "piątek":
+                dayOfTheWeek = "sobota";
+                // code block
+                break;
+            case "sobota":
+                dayOfTheWeek = "niedziela";
+                // code block
+                break;
+            case "niedziela":
+                dayOfTheWeek = "poniedziałek";
+                // code block
+                break;
+        }
+    }
+
+    public static void nextMonth(){     //METODA MODYFIKUJĄCA MIESIĄC
         if(Month == Months[0] && Day == 32){
             Day = 1;
             Month = Months[1];
@@ -78,6 +117,6 @@ public class Time {
 
     @Override
     public String toString() {
-        return "                              " + Day + " " + Month + " " + Year + "\n";
+        return "                              " + Day + " " + Month + " " + Year + " " + dayOfTheWeek;
     }
 }

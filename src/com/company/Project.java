@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Random;
 
 public class Project {
-    public String projectName;                                  //NAZWA PROJEKTU
-    public Integer leadTime = 0;                                //ILOSC DNI POTRZEBNYCH NA REALIZACJE PROJEKTU
-    public Client client;                                       //KLIENT
-    public Integer projectDeliveryDeadline;                     //TERMIN ODDANIA PROJEKTU (DNI)
-    public Double amountOfPenalty;                              //WYSOKOSC KARY ZA PRZEKROCZENIE TERMINU
-    public Double Price;                                        //CENA
-    public Integer dateOfPayment;                               //TERMIN UZYSKANIA ZAPLATY W DNIACH
-    public String levelOfComplexity;                            //POZIOM ZLOZONOSCI: latwy sredni, trudny
-    List<String> projectContent = new ArrayList<>();            //ZAWARTOSC PROJEKTU
-    List<String> typesOfDesignProperties = new ArrayList<>();   //WSZYSTKIE OPCJE ZAWARTOSCI
+    public String projectName;                                        //NAZWA PROJEKTU
+    public Integer leadTime = 0;                                      //ILOSC DNI POTRZEBNYCH NA REALIZACJE PROJEKTU
+    public Client client;                                             //KLIENT
+    public Integer projectDeliveryDeadline;                           //TERMIN ODDANIA PROJEKTU (DNI)
+    public Double amountOfPenalty;                                    //WYSOKOSC KARY ZA PRZEKROCZENIE TERMINU
+    public Double Price;                                              //CENA
+    public Integer dateOfPayment;                                     //TERMIN UZYSKANIA ZAPLATY W DNIACH
+    public String levelOfComplexity;                                  //POZIOM ZLOZONOSCI: latwy sredni, trudny
+    List<Technologies> projectContent = new ArrayList<>();            //ZAWARTOSC PROJEKTU
+    List<Technologies> typesOfDesignProperties = new ArrayList<>();   //WSZYSTKIE OPCJE ZAWARTOSCI
 
     public Project(String projectName, Client client, Integer projectDeliveryDeadline,
                    Double amountOfPenalty, Double Price, Integer dateOfPayment, String levelOfComplexity){
@@ -26,14 +26,18 @@ public class Project {
         this.dateOfPayment = dateOfPayment;
         this.levelOfComplexity = levelOfComplexity;
 
-        typesOfDesignProperties.add("front-end");       //3 DNI
-        typesOfDesignProperties.add("back-end");        //4 DNI
-        typesOfDesignProperties.add("baza-danych");     //4 DNI
-        typesOfDesignProperties.add("mobile");          //6 DNI
-        typesOfDesignProperties.add("wordpress");       //3 DNI
-        typesOfDesignProperties.add("prestashop");      //3 DNI
+        typesOfDesignProperties.add(new Technologies("front-end"));       //3 DNI
+        typesOfDesignProperties.add(new Technologies("back-end"));        //4 DNI
+        typesOfDesignProperties.add(new Technologies("baza-danych"));     //4 DNI
+        typesOfDesignProperties.add(new Technologies("mobile"));          //6 DNI
+        typesOfDesignProperties.add(new Technologies("wordpress"));       //3 DNI
+        typesOfDesignProperties.add(new Technologies("prestashop"));      //3 DNI
 
         generateProjectContent();
+    }
+
+    public List<Technologies> getProjectContent() {
+        return projectContent;
     }
 
     public void generateProjectContent(){       //GENERUJE ZAWARTOSC PROJEKTU
@@ -51,25 +55,10 @@ public class Project {
         countTheLeadTime();
     }
 
-    public List<String> getProjectContent() {
-        return projectContent;
-    }
-
     public void countTheLeadTime()      //LICZY ILOSC DNI POTRZEBNYCH NA REALIZACJE PROJEKTU
     {
         for(int i = 0; i < projectContent.size(); i++){
-            if(projectContent.get(i) == "front-end")
-                leadTime += 3;
-            if(projectContent.get(i) == "back-end")
-                leadTime += 4;
-            if(projectContent.get(i) == "baza-danych")
-                leadTime += 4;
-            if(projectContent.get(i) == "mobile")
-                leadTime += 6;
-            if(projectContent.get(i) == "wordpress")
-                leadTime += 3;
-            if(projectContent.get(i) == "prestashop")
-                leadTime += 3;
+            leadTime += projectContent.get(i).timeNeededToComplete;
         }
     }
 

@@ -1,9 +1,6 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Company {
@@ -11,7 +8,9 @@ public class Company {
     List<Project> toDoList = new ArrayList<>();                         //LISTA PROJEKTÓW DO ZROBIENIA
     List<Project> projectContractsAvailable = new ArrayList<>();        //DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
     List<Project> projectList = new ArrayList<>();                      //LISTA WSZYSTKICH PROJEKTÓW
+    List<Project> completedProjects = new ArrayList<>();                //LISTA UKONCZONYCH PROJEKTÓW
     Time myTime = new Time();
+    public int dayCounter = 0;                                          //LICZNIK DNI W POSZUKIWANIU KLIENTÓW
 
     public Company()
     {
@@ -21,7 +20,19 @@ public class Company {
     }
 
     public void generateProject(){                                      //METODA GENERUJĄCA NOWE PROJEKTY DO ROZGRYWKI
-
+        boolean hasBeenAdded = false;
+        dayCounter++;
+        myTime.endOfTurn();
+        if(dayCounter == 5) {
+            while (hasBeenAdded == false) {
+                int Number = randomBetween(0,14);
+                if (projectContractsAvailable.contains(projectList.get(Number)) == false) {
+                    projectContractsAvailable.add(projectList.get(Number));
+                    hasBeenAdded = true;
+                }
+            }
+            dayCounter = 0;
+        }
     }
 
     public void generateThreeProjects(){                                //GENERUJE PIERWSZE TRZY PROJEKTY DOSTĘPNE DO REALIZACJI PO URUCHOMIENIU GRY
@@ -52,34 +63,40 @@ public class Company {
     }
 
     public List<Project> getProjectContractsAvailable() {       //METODA SPRAWDZAJĄCA DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
-        for (int i = 0; i < projectContractsAvailable.size(); i++)
-            System.out.println("                                                     "+ "ID: " + i + " " + projectContractsAvailable.get(i) + " - " + projectContractsAvailable.get(i).levelOfComplexity + " Poziom zaawansowania");
+        for (int i = 0; i < projectContractsAvailable.size(); i++){
+            System.out.println("                                                     "+ "ID: " + i + " " + projectContractsAvailable.get(i) + " - " + projectContractsAvailable.get(i).levelOfComplexity + " Poziom zaawansowania" + " " + "Cena: " + projectContractsAvailable.get(i).Price);}
         return projectContractsAvailable;
     }
 
-    public void choiceAction(){     //METODA DOKONANIA WYBORU
-        System.out.println("1. Spawdź wymagania technologiczne lub podpisz umowę: ");
-        System.out.println("0. Wyjdź");
+    public void choiceActionOnContractsAvailable(){     //METODA DOKONANIA WYBORU
+        System.out.println("");
+        System.out.println("                                      1. Spawdź wymagania technologiczne lub podpisz umowę: ");
+        System.out.println("                                      0. Wyjdź");
         int choice;
         Scanner scan = new Scanner(System.in);
         choice = scan.nextInt();
         if(choice == 1)
-            checkTechnologies();
+            checkTechnologiesContractsAvailable();
     }
 
-    public void checkTechnologies(){        //METODA SPRAWDZAJĄCA POTRZEBY TECHNOLOGICZNE PROJEKTU
-        System.out.println("Wpisz ID Projektu: ");
+    public void checkTechnologiesContractsAvailable(){        //METODA SPRAWDZAJĄCA POTRZEBY TECHNOLOGICZNE DOSTĘPNEGO PROJEKTU
+        System.out.println("");
+        System.out.println("                                        Wprowadź ID Projektu: ");
         int ID;
         Scanner scan = new Scanner(System.in);
         ID = scan.nextInt();
-        System.out.println(projectContractsAvailable.get(ID).getProjectContent());
+        System.out.println("                                                    Wymagania technologiczne: ");
+        System.out.println("");
+        for (int i = 0; i < projectContractsAvailable.get(ID).projectContent.size(); i++){
+            System.out.println("                                  " + "- " +projectContractsAvailable.get(ID).getProjectContent().get(i).name);
+        }
         sighTheContract(projectContractsAvailable.get(ID));
     }
 
-
     public void sighTheContract(Project project){      //METODA PODPISUJĄCA KONTRAKT NA REALIZACJE PROJEKTU
-        System.out.println("1. Podpisz kontrakt");
-        System.out.println("0. Wyjdź");
+        System.out.println("");
+        System.out.println("                                 1. Podpisz kontrakt");
+        System.out.println("                                 0. Wyjdź");
         int choice;
         Scanner scan = new Scanner(System.in);
         choice = scan.nextInt();
@@ -87,6 +104,109 @@ public class Company {
             toDoList.add(project);
             projectContractsAvailable.remove(project);
             myTime.endOfTurn();
+        }
+    }
+
+    public void choiceActionOnToDoList(){       //METODA DOKONANIA WYBORU
+        System.out.println("");
+        System.out.println("                                          1. Sprawdź stan realizacji projektu: ");
+        System.out.println("                                          2. Przeznacz dzień na testowanie: ");
+        System.out.println("                                          0. Wyjdź");
+        int choice;
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if(toDoList.isEmpty() == false) {
+            if (choice == 1)
+                checkTheStatusProject();
+        }
+    }
+
+    public void checkTechnologiesSignedContracts(int ID){     //METODA SPRAWDZAJĄCA POTRZEBY TECHNOLOGICZE PROJEKTU DO ZREAZLIZOWANIA
+        for(int i = 0; i < toDoList.get(ID).projectContent.size(); i++)
+        {
+           System.out.println("                   " + "ID: " + toDoList.get(ID).projectContent.indexOf(toDoList.get(ID).projectContent.get(i)) + " " + toDoList.get(ID).projectContent.get(i).name + ": " + toDoList.get(ID).projectContent.get(i).timeNeededToComplete + " dni do końca realizacji");
+        }
+        System.out.println("");
+        System.out.println("                                            1. Przeznacz dzień na programowanie: ");
+        System.out.println("                                            2. Zleć pracę znajomemu ze studiów: ");
+        System.out.println("                                            0. Wyjdź: ");
+        int choice;
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if (choice == 1)
+            isWorking(ID);
+    }
+
+    public void isWorking(int ID){                              //METODA KTÓRA REALIZUJE PROJEKT
+        int IDTechnology;
+        System.out.println("                                             Wpisz ID technologii nad którą chcesz popracować: ");
+        Scanner scan = new Scanner(System.in);
+        IDTechnology = scan.nextInt();
+        if(toDoList.get(ID).projectContent.get(IDTechnology).name != "mobile") {
+            if (toDoList.get(ID).projectContent.get(IDTechnology).timeNeededToComplete > 0) {
+                toDoList.get(ID).projectContent.get(IDTechnology).timeNeededToComplete--;
+                toDoList.get(ID).leadTime--;
+                isProjectFinished(toDoList.get(ID));
+                myTime.endOfTurn();
+            } else System.out.println("                                        Ta część projektu jest już ukończona");
+        } else System.out.println("                                            Nie potrafisz robić aplikacji mobilnych, możesz zatrudnić pracownika, lub zlecić to znajomemu ze studiów \n");
+    }
+
+    public void isProjectFinished(Project project)               //METODA SPRAWDZAJĄCA CZY PROJEKT JEST SKONCZONY
+    {
+        if (project.leadTime == 0)
+        {
+            completedProjects.add(project);
+            toDoList.remove(project);
+        }
+    }
+
+    public void checkTheStatusProject()     //METODA SPRAWDZAJĄCA STATUS WYKONANEGO PROJEKTU
+    {
+        int ID;
+        System.out.println("                                             1. Wprowadź ID projektu: ");
+        Scanner scan = new Scanner(System.in);
+        ID = scan.nextInt();
+        if(toDoList.get(ID) != null)
+        {
+            System.out.println("                                        Liczba dni do ukończenia: " + toDoList.get(ID).leadTime);
+            System.out.println("");
+            checkTechnologiesSignedContracts(ID);
+        }
+    }
+
+    public List<Project> getToDoList() {        //METODA ZWRACA LISTE PROJEKTÓW DO ZREALIZOWANIA
+        for (int i = 0; i < toDoList.size(); i++){
+            System.out.println("                                       "+ "ID: " + i + " " + toDoList.get(i) + " - " + toDoList.get(i).levelOfComplexity + " Poziom zaawansowania");}
+        return toDoList;
+    }
+
+    public Double getAccountBalance() {
+        System.out.print("                      Stan konta: ");
+        return accountBalance;
+    }
+
+    public void returnFinishedProject()
+    {
+        if (completedProjects.isEmpty() == false)
+        {
+            int choice;
+            int ID;
+            for (int i = 0; i < completedProjects.size(); i++)
+            {
+                System.out.println("                                      " + "ID: " + i + " "+ completedProjects.get(i));
+            }
+            System.out.println("                                                1. Zwróć projekt");
+            System.out.println("                                                0. Wyjdź");
+            Scanner scan = new Scanner(System.in);
+            choice = scan.nextInt();
+            if (choice == 1){
+                System.out.println("                                       Wprowadź ID gotowego projektu: ");
+                Scanner scan2 = new Scanner(System.in);
+                ID = scan2.nextInt();
+                accountBalance += completedProjects.get(ID).Price;
+                completedProjects.remove(completedProjects.get(ID));
+            }
         }
     }
 
