@@ -9,6 +9,7 @@ public class Company {
     List<Project> projectContractsAvailable = new ArrayList<>();        //DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
     List<Project> projectList = new ArrayList<>();                      //LISTA WSZYSTKICH PROJEKTÓW
     List<Project> completedProjects = new ArrayList<>();                //LISTA UKONCZONYCH PROJEKTÓW
+    List<Classmates> classMates = new ArrayList<>();                    //LISTA ZNAJOMYCH ZE STUDIÓW
     Time myTime = new Time();
     public int dayCounter = 0;                                          //LICZNIK DNI W POSZUKIWANIU KLIENTÓW
 
@@ -17,6 +18,9 @@ public class Company {
         accountBalance = 10000.0;
         listOfAllProjects();
         generateThreeProjects();
+        classMates.add(new Classmates("Grzegorz", "Zioło", "Najlepszy", 1500, this));
+        classMates.add(new Classmates("Robert", "Biedroń", "Sredni", 1000, this));
+        classMates.add(new Classmates("Fabian", "Kluczyński", "Luzak", 500, this));
     }
 
     public void generateProject(){                                      //METODA GENERUJĄCA NOWE PROJEKTY DO ROZGRYWKI
@@ -135,6 +139,34 @@ public class Company {
         choice = scan.nextInt();
         if (choice == 1)
             isWorking(ID);
+        if (choice == 2)
+            returnClassmates();
+    }
+
+    public void returnClassmates(){
+        for (int i = 0; i < classMates.size(); i++)
+        {
+            System.out.println("                                                     ID: " + classMates.indexOf(classMates.get(i)) + " " + classMates.get(i));
+        }
+        System.out.println("");
+        System.out.println("                                                        1. Przydziel projekt znajomemu");
+        System.out.println("                                                        0. Wyjdź");
+        int choice;
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if (choice == 1){
+            int idClassmate;
+            int idProject;
+            System.out.println("                                                    Wprowadź ID znajomego: ");
+            Scanner scan2 = new Scanner(System.in);
+            idClassmate = scan2.nextInt();
+            System.out.println("                                                    Wprowadź ID projektu: ");
+            Scanner scan3 = new Scanner(System.in);
+            idProject = scan3.nextInt();
+            classMates.get(idClassmate).submitProject(toDoList.get(idProject));
+            toDoList.remove(toDoList.get(idProject));
+            myTime.endOfTurn();
+        }
     }
 
     public void isWorking(int ID){                              //METODA KTÓRA REALIZUJE PROJEKT
@@ -157,7 +189,9 @@ public class Company {
         if (project.leadTime == 0)
         {
             completedProjects.add(project);
-            toDoList.remove(project);
+
+            if(toDoList.contains(project))
+                toDoList.remove(project);
         }
     }
 
@@ -207,6 +241,14 @@ public class Company {
                 accountBalance += completedProjects.get(ID).Price;
                 completedProjects.remove(completedProjects.get(ID));
             }
+        }
+    }
+
+    public void studentWork()           //METODA KTÓRA POZWALA NA PRACE W TLE, REALIZOWANIE PROJEKTU PRZEZ STUDENTÓW
+    {
+        for (int i = 0; i < classMates.size(); i++)
+        {
+            classMates.get(i).isWorking();
         }
     }
 

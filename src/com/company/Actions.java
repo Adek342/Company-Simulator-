@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Actions {
     Company company = new Company();
     Time myTime = new Time();
+    WorkBackground workBackground = new WorkBackground(company);
     public Actions(){}
 
     public void showActions() {     // METODA WYSWIETLAJACA DOSTEPNE CZYNNOSCI
@@ -57,6 +58,7 @@ public class Actions {
                 // code block
                 break;
         }
+        workBackground.studentWork();
         showActions();
         }
     }

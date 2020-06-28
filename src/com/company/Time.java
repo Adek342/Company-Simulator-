@@ -27,7 +27,7 @@ public class Time {
         Day = 1;
     }
     public static void endOfTurn(){     //METODA WYWOLYWANA PO WYKONANIU CZYNNOSCI DZIENNEJ
-        Day++;      // PRZECHODZI DO NASTEPNEGO DNIA MIESIACA ( TURY ) PO WYKONANIU CZYNNOSCI
+        Day++;                          // PRZECHODZI DO NASTEPNEGO DNIA MIESIACA ( TURY ) PO WYKONANIU CZYNNOSCI
         nextMonth();
         nextDayOfTheWeek();
     }
