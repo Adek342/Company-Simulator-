@@ -6,6 +6,7 @@ public class Actions {
     Company company = new Company();
     Time myTime = new Time();
     WorkBackground workBackground = new WorkBackground(company);
+
     public Actions(){}
 
     public void showActions() {     // METODA WYSWIETLAJACA DOSTEPNE CZYNNOSCI
@@ -15,10 +16,8 @@ public class Actions {
         System.out.println("                                          2. Przeznacz dzień na szukanie klientów (każde 5 dni to jeden nowy dostępny projekt)");
         System.out.println("                                          3. Lista projektów do zrealizowania");
         System.out.println("                                          4. Oddaj gotowy projekt klientowi");
-        System.out.println("                                          5. Zatrudnij nowego pracownika");
-        System.out.println("                                          6. Zwolnij pracownika");
-        System.out.println("                                          7. Przeznacz dzień na rozliczenia z urzędami (Wymagane 2 dni w miesiącu, w przeciwnym wypadku zamykasz firmę z długami)");
-        System.out.println("                                          8. Sprawdź swój zespół \n");
+        System.out.println("                                          5. Sprawdź swój zespół");
+        System.out.println("                                          6. Przeznacz dzień na rozliczenia z urzędami (Wymagane 2 dni w miesiącu, w przeciwnym wypadku zamykasz firmę z długami) \n");
         System.out.println("                                       Twój wybór: ");
         choiceAction();
     }
@@ -46,19 +45,15 @@ public class Actions {
                 company.returnFinishedProject();
                 break;
             case 5:
-                // code block
+                company.getListOfEmployees();
+                company.setListOfEmployees();
                 break;
             case 6:
                 // code block
                 break;
-            case 7:
-                // code block
-                break;
-            case 8:
-                // code block
-                break;
         }
         workBackground.studentWork();
+        workBackground.projectReturnDate();
         showActions();
         }
     }

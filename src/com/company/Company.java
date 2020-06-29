@@ -7,9 +7,12 @@ public class Company {
     public Double accountBalance;                                       //STAN KONTA
     List<Project> toDoList = new ArrayList<>();                         //LISTA PROJEKTÓW DO ZROBIENIA
     List<Project> projectContractsAvailable = new ArrayList<>();        //DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
-    List<Project> projectList = new ArrayList<>();                      //LISTA WSZYSTKICH PROJEKTÓW
+    List<Project> projectList = new ArrayList<>();                      //LISTA WSZYSTKICH PROJEKTÓW (PULA)
     List<Project> completedProjects = new ArrayList<>();                //LISTA UKONCZONYCH PROJEKTÓW
     List<Classmates> classMates = new ArrayList<>();                    //LISTA ZNAJOMYCH ZE STUDIÓW
+    List<Workers> listOfAvailableEmployees = new ArrayList<>();         //LISTA DOSTĘPNYCH PRACOWNIKÓW DO ZATRUDNIENIA
+    List<Workers> listOfAllWorkers = new ArrayList<>();                 //LISTA WSZYSKICH PRACOWNIKÓW (PULA)
+    List<Workers> listOfEmployees = new ArrayList<>();                  //LISTA PRACOWNIKÓW ZATRUDNIONYCH
     Time myTime = new Time();
     public int dayCounter = 0;                                          //LICZNIK DNI W POSZUKIWANIU KLIENTÓW
 
@@ -18,9 +21,9 @@ public class Company {
         accountBalance = 10000.0;
         listOfAllProjects();
         generateThreeProjects();
-        classMates.add(new Classmates("Grzegorz", "Zioło", "Najlepszy", 1500, this));
-        classMates.add(new Classmates("Robert", "Biedroń", "Sredni", 1000, this));
-        classMates.add(new Classmates("Fabian", "Kluczyński", "Luzak", 500, this));
+        listOfAllWorkers();
+        listOfAllClassmates();
+        generateFirstAvailableEmployees();
     }
 
     public void generateProject(){                                      //METODA GENERUJĄCA NOWE PROJEKTY DO ROZGRYWKI
@@ -48,27 +51,57 @@ public class Company {
         }
     }
 
+    public void generateFirstAvailableEmployees()
+    {
+        while (listOfAvailableEmployees.size() != 3) {
+            int Number = randomBetween(0, 8);
+            if (listOfAvailableEmployees.isEmpty() == true || listOfAvailableEmployees.contains(listOfAllWorkers.get(Number)) == false)
+                listOfAvailableEmployees.add(listOfAllWorkers.get(Number));
+        }
+    }
+
     public void listOfAllProjects(){                                    //LISTA WSZYSTKICH PROJEKTÓW
-        projectList.add(new Project("Project1", new Client("Mariusz", "Konieczko"), 23, 500.0, 6000.0, 2, "Trudny"));
-        projectList.add(new Project("Project2", new Client("Dariusz", "Granda"), 10, 1000.0, 3000.0, 2, "Średni"));
-        projectList.add(new Project("Project3", new Client("Kacper", "Bromski"), 6, 1500.0, 1000.0, 3, "Łatwy"));
-        projectList.add(new Project("Project4", new Client("Jan", "Malanowski"), 10, 1000.0, 3000.0, 5, "Średni"));
-        projectList.add(new Project("Project5", new Client("Edward", "Bułka"), 6, 1500.0, 1000.0, 4, "Łatwy"));
-        projectList.add(new Project("Project6", new Client("Krzysztof", "Fasola"), 23, 500.0, 6000.0, 3, "Trudny"));
-        projectList.add(new Project("Project7", new Client("Zbigniew", "Boczek"), 6, 1500.0, 1000.0, 2, "Łatwy"));
-        projectList.add(new Project("Project8", new Client("Andrzej", "Filipowicz"), 10, 1000.0, 3000.0, 3, "Średni"));
-        projectList.add(new Project("Project9", new Client("Grzegorz", "Brzęczyszczykiewicz"), 6, 1500.0, 1000.0, 2, "Łatwy"));
-        projectList.add(new Project("Project10", new Client("Sebastian", "Bąk"), 10, 1000.0, 3000.0, 1, "Średni"));
-        projectList.add(new Project("Project11", new Client("Adam", "Górzyński"), 6, 1500.0, 1000.0, 2, "Łatwy"));
-        projectList.add(new Project("Project12", new Client("Rajmund", "Górski"), 23, 500.0, 6000.0, 1, "Trudny"));
-        projectList.add(new Project("Project13", new Client("Leszek", "Izbaner"), 10, 1000.0, 3000.0, 2, "Średni"));
-        projectList.add(new Project("Project14", new Client("Eryk", "Kawulski"), 6, 1500.0, 1000.0, 3, "Łatwy"));
-        projectList.add(new Project("Project15", new Client("Kajetan", "Szaranowicz"), 6, 1500.0, 3000.0, 2, "Łatwy"));
+        projectList.add(new Project("Gra komputerowa        ", new Client("Mariusz", "Konieczko"), 23, 500.0, 6000.0, 2, "Trudny"));
+        projectList.add(new Project("Aplikacja mobilna      ", new Client("Dariusz", "Granda"), 10, 1000.0, 3000.0, 2, "Średni"));
+        projectList.add(new Project("Aplikacja komputerowa      ", new Client("Kacper", "Bromski"), 6, 1500.0, 1000.0, 3, "Łatwy"));
+        projectList.add(new Project("Aplikacja dla poczty       ", new Client("Jan", "Malanowski"), 10, 1000.0, 3000.0, 5, "Średni"));
+        projectList.add(new Project("Witryna dla restauracji        ", new Client("Edward", "Bułka"), 6, 1500.0, 1000.0, 4, "Łatwy"));
+        projectList.add(new Project("Gra VR dla szkół       ", new Client("Krzysztof", "Fasola"), 23, 500.0, 6000.0, 3, "Trudny"));
+        projectList.add(new Project("Aplikacja dla restauracji  ", new Client("Zbigniew", "Boczek"), 6, 1500.0, 1000.0, 2, "Łatwy"));
+        projectList.add(new Project("Dziennik elektroniczny dla szkoły  ", new Client("Andrzej", "Filipowicz"), 10, 1000.0, 3000.0, 3, "Średni"));
+        projectList.add(new Project("Aplikacja dla służb mundurowych    ", new Client("Grzegorz", "Brzęczyszczykiewicz"), 6, 1500.0, 1000.0, 2, "Łatwy"));
+        projectList.add(new Project("System dla służb mundurowych   ", new Client("Sebastian", "Bąk"), 10, 1000.0, 3000.0, 1, "Średni"));
+        projectList.add(new Project("Oprogramowanie dla Służby Więźiennej   ", new Client("Adam", "Górzyński"), 6, 1500.0, 1000.0, 2, "Łatwy"));
+        projectList.add(new Project("System alarmowy dla firmy  ", new Client("Rajmund", "Górski"), 23, 500.0, 6000.0, 1, "Trudny"));
+        projectList.add(new Project("Aplikacja dla Zoo  ", new Client("Leszek", "Izbaner"), 10, 1000.0, 3000.0, 2, "Średni"));
+        projectList.add(new Project("Aplikacja dla Muzeum   ", new Client("Eryk", "Kawulski"), 6, 1500.0, 1000.0, 3, "Łatwy"));
+        projectList.add(new Project("Witryna dla Muzeum     " +
+                "", new Client("Kajetan", "Szaranowicz"), 6, 1500.0, 3000.0, 2, "Łatwy"));
+    }
+
+    public void listOfAllWorkers(){
+        listOfAllWorkers.add(new Workers("Adrian", "Gruszka", "Programista"));
+        listOfAllWorkers.add(new Workers("Bartek", "Sosnowski", "Sprzedawca"));
+        listOfAllWorkers.add(new Workers("Krzysztof", "Korona", "Tester"));
+        listOfAllWorkers.add(new Workers("Robert", "Zawistowski", "Programista"));
+        listOfAllWorkers.add(new Workers("Jędrzej", "Żelazny", "Sprzedawca"));
+        listOfAllWorkers.add(new Workers("Szymon", "Pawłowicz", "Tester"));
+        listOfAllWorkers.add(new Workers("Gabriel", "Konopnicki", "Programista"));
+        listOfAllWorkers.add(new Workers("Fabian", "Kremowski", "Sprzedawca"));
+        listOfAllWorkers.add(new Workers("Tomasz", "Węgiel", "Tester"));
+    }
+
+    public void listOfAllClassmates(){
+        classMates.add(new Classmates("Grzegorz", "Zioło", "Najlepszy", 1500, this));
+        classMates.add(new Classmates("Robert", "Biedroń", "Sredni", 1000, this));
+        classMates.add(new Classmates("Fabian", "Kluczyński", "Luzak", 500, this));
     }
 
     public List<Project> getProjectContractsAvailable() {       //METODA SPRAWDZAJĄCA DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
         for (int i = 0; i < projectContractsAvailable.size(); i++){
-            System.out.println("                                                     "+ "ID: " + i + " " + projectContractsAvailable.get(i) + " - " + projectContractsAvailable.get(i).levelOfComplexity + " Poziom zaawansowania" + " " + "Cena: " + projectContractsAvailable.get(i).Price);}
+            System.out.println("                                                     "+ "ID: " + i + " " +
+                    projectContractsAvailable.get(i) + " - " + projectContractsAvailable.get(i).levelOfComplexity + " Poziom zaawansowania"
+                    + " " + "Cena: " + projectContractsAvailable.get(i).Price + "      Termin: " + projectContractsAvailable.get(i).projectDeliveryDeadline + " dni");}
         return projectContractsAvailable;
     }
 
@@ -105,9 +138,15 @@ public class Company {
         Scanner scan = new Scanner(System.in);
         choice = scan.nextInt();
         if(choice == 1) {
-            toDoList.add(project);
-            projectContractsAvailable.remove(project);
-            myTime.endOfTurn();
+            if(project.levelOfComplexity == "Trudny" && listOfEmployees.isEmpty()){
+                System.out.println("");
+                System.out.println("                                 Musisz mieć chociaż jednego pracownika, żeby podpisać kontrakt na zaawansowany projekt \n");
+            }
+            else {
+                toDoList.add(project);
+                projectContractsAvailable.remove(project);
+                myTime.endOfTurn();
+            }
         }
     }
 
@@ -143,7 +182,7 @@ public class Company {
             returnClassmates();
     }
 
-    public void returnClassmates(){
+    public void returnClassmates(){                                     //METODA ZWRACAJĄCA STUDENTÓW WRAZ Z PRZYPISYWANIEM PROJEKTU
         for (int i = 0; i < classMates.size(); i++)
         {
             System.out.println("                                                     ID: " + classMates.indexOf(classMates.get(i)) + " " + classMates.get(i));
@@ -211,7 +250,7 @@ public class Company {
 
     public List<Project> getToDoList() {        //METODA ZWRACA LISTE PROJEKTÓW DO ZREALIZOWANIA
         for (int i = 0; i < toDoList.size(); i++){
-            System.out.println("                                       "+ "ID: " + i + " " + toDoList.get(i) + " - " + toDoList.get(i).levelOfComplexity + " Poziom zaawansowania");}
+            System.out.println("                                       "+ "ID: " + i + " " + toDoList.get(i) + " - " + toDoList.get(i).levelOfComplexity + " Poziom zaawansowania" + "          Do końca teminu: " + toDoList.get(i).projectDeliveryDeadline + " dni");}
         return toDoList;
     }
 
@@ -249,6 +288,75 @@ public class Company {
         for (int i = 0; i < classMates.size(); i++)
         {
             classMates.get(i).isWorking();
+        }
+    }
+
+    public void getListOfEmployees() {
+        if(listOfEmployees.isEmpty() == false)
+        {
+            for (int i = 0; i < listOfEmployees.size(); i++)
+            {
+                System.out.println("                                    " + listOfEmployees.get(i).Name + " " + listOfEmployees.get(i).lastName + " " + listOfEmployees.get(i).employeeType + "\n");
+            }
+        }
+        else System.out.println("                                           Nie masz jeszcze pracowników \n");
+    }
+
+    public void setListOfEmployees()
+    {
+        int choice;
+        System.out.println("                                            1. Zatrudnij pracownika");
+        System.out.println("                                            2. Zwolnij pracownika");
+        System.out.println("                                            0. Wyjdź \n");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if (choice == 1)
+        {
+            hireAnEmployee();
+        }
+        if (choice == 2 && listOfEmployees.isEmpty() == false)
+        {
+            fireAnEmployee();
+        }
+        else System.out.println("                                       Nie możesz zwolnić pracownika, ponieważ nie masz pracowników \n");
+    }
+
+    public void hireAnEmployee()
+    {
+        int choice;
+        int ID;
+        for (int i = 0; i < listOfAvailableEmployees.size(); i++){
+            System.out.println("                                       " + "ID: " + listOfAvailableEmployees.indexOf(listOfAvailableEmployees.get(i)) + " " + listOfAvailableEmployees.get(i) + "\n");
+        }
+        System.out.println("                                            1. Zatrudnij");
+        System.out.println("                                            0. Wyjdź");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if(choice == 1)
+        {
+            System.out.println("                                      Wprowadź ID: ");
+            Scanner scan2 = new Scanner(System.in);
+            ID = scan2.nextInt();
+            listOfEmployees.add(listOfAvailableEmployees.get(ID));
+        }
+    }
+
+    public void fireAnEmployee(){
+        int choice;
+        int ID;
+        for (int i = 0; i < listOfEmployees.size(); i++){
+            System.out.println("                                       " + "ID: " + listOfEmployees.indexOf(listOfEmployees.get(i)) + " " + listOfEmployees.get(i) + "\n");
+        }
+        System.out.println("                                            1. Zwolnij");
+        System.out.println("                                            0. Wyjdź");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if(choice == 1)
+        {
+            System.out.println("                                      Wprowadź ID: ");
+            Scanner scan2 = new Scanner(System.in);
+            ID = scan2.nextInt();
+            listOfEmployees.remove(listOfEmployees.get(ID));
         }
     }
 
