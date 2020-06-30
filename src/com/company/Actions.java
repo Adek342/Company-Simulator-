@@ -26,6 +26,10 @@ public class Actions {
         int choice = -1;
 
         while (choice >= 1 || choice <= 11){
+            if (company.accountBalance < 0) {
+                System.out.println("                                                        Przegrywasz");
+                break;
+            }
             Scanner scan = new Scanner(System.in);
             choice = scan.nextInt();
 
@@ -54,6 +58,7 @@ public class Actions {
         }
         workBackground.studentWork();
         workBackground.projectReturnDate();
+        workBackground.employeeMaintenanceCost();
         showActions();
         }
     }

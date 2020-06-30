@@ -4,7 +4,7 @@ import java.util.*;
 
 
 public class Company {
-    public Double accountBalance;                                       //STAN KONTA
+    public int accountBalance;                                       //STAN KONTA
     List<Project> toDoList = new ArrayList<>();                         //LISTA PROJEKTÓW DO ZROBIENIA
     List<Project> projectContractsAvailable = new ArrayList<>();        //DOSTĘPNE PROJEKTY DO ZREALIZOWANIA
     List<Project> projectList = new ArrayList<>();                      //LISTA WSZYSTKICH PROJEKTÓW (PULA)
@@ -18,7 +18,7 @@ public class Company {
 
     public Company()
     {
-        accountBalance = 10000.0;
+        accountBalance = 10000;
         listOfAllProjects();
         generateThreeProjects();
         listOfAllWorkers();
@@ -153,8 +153,8 @@ public class Company {
     public void choiceActionOnToDoList(){       //METODA DOKONANIA WYBORU
         System.out.println("");
         System.out.println("                                          1. Sprawdź stan realizacji projektu: ");
-        System.out.println("                                          2. Przeznacz dzień na testowanie: ");
         System.out.println("                                          0. Wyjdź");
+
         int choice;
         Scanner scan = new Scanner(System.in);
         choice = scan.nextInt();
@@ -204,6 +204,7 @@ public class Company {
             idProject = scan3.nextInt();
             classMates.get(idClassmate).submitProject(toDoList.get(idProject));
             toDoList.remove(toDoList.get(idProject));
+            accountBalance = accountBalance - classMates.get(idClassmate).Price;
             myTime.endOfTurn();
         }
     }
@@ -254,7 +255,7 @@ public class Company {
         return toDoList;
     }
 
-    public Double getAccountBalance() {
+    public int getAccountBalance() {
         System.out.print("                      Stan konta: ");
         return accountBalance;
     }
@@ -307,6 +308,7 @@ public class Company {
         int choice;
         System.out.println("                                            1. Zatrudnij pracownika");
         System.out.println("                                            2. Zwolnij pracownika");
+        System.out.println("                                            3. Wydaj pieniądze na ogłoszenia");
         System.out.println("                                            0. Wyjdź \n");
         Scanner scan = new Scanner(System.in);
         choice = scan.nextInt();
@@ -314,11 +316,15 @@ public class Company {
         {
             hireAnEmployee();
         }
-        if (choice == 2 && listOfEmployees.isEmpty() == false)
+        if (choice == 2)
+
         {
             fireAnEmployee();
         }
-        else System.out.println("                                       Nie możesz zwolnić pracownika, ponieważ nie masz pracowników \n");
+        if (choice == 3)
+        {
+            jobOffers();
+        }
     }
 
     public void hireAnEmployee()
@@ -338,6 +344,9 @@ public class Company {
             Scanner scan2 = new Scanner(System.in);
             ID = scan2.nextInt();
             listOfEmployees.add(listOfAvailableEmployees.get(ID));
+            accountBalance = accountBalance - 200;
+            listOfAvailableEmployees.remove(listOfAvailableEmployees.get(ID));
+            myTime.endOfTurn();
         }
     }
 
@@ -351,12 +360,33 @@ public class Company {
         System.out.println("                                            0. Wyjdź");
         Scanner scan = new Scanner(System.in);
         choice = scan.nextInt();
-        if(choice == 1)
+        if(choice == 1 && listOfEmployees.isEmpty() == false)
         {
             System.out.println("                                      Wprowadź ID: ");
             Scanner scan2 = new Scanner(System.in);
             ID = scan2.nextInt();
             listOfEmployees.remove(listOfEmployees.get(ID));
+            accountBalance = accountBalance - 200;
+            myTime.endOfTurn();
+        }
+        else System.out.println("                                       Nie możesz zwolnić pracownika, ponieważ nie masz pracowników \n");
+    }
+
+    public void jobOffers()                 //METODA POSZUKUJĄCA PRACOWNIKA
+    {
+        int choice;
+        System.out.println("                                                         Koszt ogłoszenia ofert pracy: 1000 \n");
+        System.out.println("                                            1. Szukaj pracowników");
+        System.out.println("                                            0. Wyjdź");
+        Scanner scan = new Scanner(System.in);
+        choice = scan.nextInt();
+        if (choice == 1)
+        {
+            accountBalance = accountBalance - 1000;
+            int Number = randomBetween(0, 8);
+            if (listOfAvailableEmployees.contains(listOfAllWorkers.get(Number)) == false)
+                listOfAvailableEmployees.add(listOfAllWorkers.get(Number));
+            myTime.endOfTurn();
         }
     }
 
